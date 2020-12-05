@@ -1,0 +1,21 @@
+@mixin scrollbar($size, $foreground-color, $background-color: mix($forground-color, white, 50%)) 
+  &::-webkit-scrollbar 
+    width: $size
+    height: $size
+
+  &::-webkit-scrollbar-thumb
+    background: transparentize($foreground-color, .2)
+    border-radius: 15px
+    &:hover
+      background: transparentize($foreground-color, .1)
+
+  &::-webkit-scrollbar-track
+    background: $background-color
+
+@mixin transition($what: all, $time: .5s, $how: ease) 
+    -webkit-transition: $what $time $how
+    -moz-transition:  $what $time $how
+    -ms-transition: $what $time $how
+    -o-transition:  $what $time $how
+    transition: $what $time $how
+

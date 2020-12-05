@@ -1,0 +1,25 @@
+@import "./weather_left";
+@import "./weather_right";
+
+.mainContainer 
+  display: flex
+  justify-content: center
+  align-items: center
+  min-width: 500px
+  overflow: hidden
+  
+.weather_container
+  font-family: "Oxygen", sans-serif
+  display: flex
+  color: #ffffff
+  width: 100%
+  height: 100vh
+  position: relative
+  &::before
+    position: absolute
+    z-index: 1
+    display: block
+    content: ''
+    width: 100%
+    height: 100%
+    background-color: rgba(0,0,0,.4)

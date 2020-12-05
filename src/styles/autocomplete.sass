@@ -1,0 +1,61 @@
+.autocomplete
+  &_container
+    position: relative
+    width: max-content
+    overflow: hidden
+    padding-top: 15px
+  &_input
+    position: relative
+    font-family: 'Poppins', sans-serif
+    z-index: 2
+    width: 90%
+    color: $gray
+    border-bottom: 1px solid $dark-gray
+    font-size: 1rem
+    &-fixed ~ label > span
+      transform: translate(-23px, -20px) scale(.75) // prevents backforward animation when input is not empty
+    &:focus ~ label
+      > span
+        transform: translate(-23px, -20px) scale(.75)
+      &::before
+        transform: translateX(0)
+  &_label
+    width: 90%
+    position: absolute
+    left: 0
+    bottom: 0
+    text-indent: 5px
+    padding: 5px 0
+    &::before
+      position: absolute
+      display: block
+      content: ''
+      width: 100%
+      height: 1px
+      background-color: #ffffff
+      bottom: 0
+      transform: translateX(-100%)
+      @include transition(transform, .6s)
+  &_placeholder
+    display: inline-block
+    color: $dark-gray
+    @include transition(transform)
+  &_dropdown
+    margin: 15px 0 20px 0
+    padding: 15px 0
+    overflow: hidden
+    height: 150px
+    @include scrollbar(5px, $dark-gray, transparent)
+    visibility: hidden
+    &:hover
+      overflow-y: auto
+  &_dropdown.is-active
+    visibility: visible
+  &_item
+    display: block
+    color: rgba(255,255,255, .3)
+    padding: 15px 3px
+    @include transition(color, .2s)
+    cursor: pointer
+    &:hover
+      color: $gray

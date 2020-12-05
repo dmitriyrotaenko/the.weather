@@ -1,0 +1,32 @@
+.nextDays
+  min-height: 200px
+  @include transition
+  &_container
+    padding-top: 30px
+  &_item
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 15px 0
+    &:last-child
+      padding-bottom: 0
+    &-box
+      width: 33.33%
+    &-centered
+      display: flex
+      justify-content: center
+  &_title
+    text-transform: capitalize
+    color: #ffffff
+    font-weight: bold
+    margin-bottom: 30px
+  &_day
+    color: $dark-gray
+  &_state
+    align-self: flex-start
+  &_temps
+    display: flex
+    justify-content: flex-end
+  &_min
+    color: $dark-gray
+    margin-left: 10px

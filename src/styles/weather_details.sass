@@ -1,0 +1,23 @@
+.weather_details
+  border-top: 1px solid $dark-gray
+  border-bottom: 1px solid $dark-gray
+  padding: 30px 0
+
+.details
+  @include transition
+  &_title
+    text-transform: capitalize
+    color: #ffffff
+    font-weight: bold
+    margin-bottom: 30px
+  &_item
+    display: flex
+    justify-content: space-between
+    padding: 15px 0
+    &:last-child
+      padding-bottom: 0
+  &_name
+    color: $dark-gray
+  &_value
+    color: #ffffff
+  

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+  <title>Weather Application</title>
+</head>
+<body>
+  <div class="mainContainer">
+    <div class="weather_container">
+      <div class="weather_left">
+        <div class="left_container">
+          <h6 class="weather_title">the.weather</h6>
+          <div class="current">
+
+            <div class="current_temperature"></div>
+
+            <div class="current_city">
+              <div class="current_city_name"></div>
+              
+              <div class="current_city_date">
+                <span class="current_city_time"></span>
+              </div>
+            </div>
+
+
+            <div class="current_state">
+              <div class="current_state_icon"></div>
+              <div class="current_state_text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      
+      
+      <div class="sidepanel">
+        <div class="sidepanel_blurred"></div>
+        <div class="sidepanel_container">
+          <div class="sidepanel_top">
+            <div class="autocomplete"></div>
+          </div>
+          <div class="details_container">
+            <div class="details hidden">
+              <div class="weather_details">
+                <h6 class="details_title">weather details</h6>
+                <div class="details_info">
+                  <ul class="details_list">
+                    <li class="details_item">
+                      <span class="details_name">Cloudy</span>
+                      <span class="cloudy_value details_value"></span>
+                    </li>
+                    <li class="details_item">
+                      <span class="details_name">Humidity</span>
+                      <span class="humidity_value details_value"></span>
+                    </li>
+                    <li class="details_item">
+                      <span class="details_name">Wind</span>
+                      <span class="wind_value details_value"></span>
+                    </li>
+                  </ul> 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nextDays_container">
+            <div class="nextDays hidden">
+              <h6 class="nextDays_title">next days</h6>
+              <div class="nextDays_info">
+                <ul class="nextDays_list"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://kit.fontawesome.com/f289cef5e6.js" crossorigin="anonymous"></script>
+</body> 
+</html>
