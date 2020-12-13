@@ -1,0 +1,24 @@
+.tooltip
+  position: absolute
+  top: 0
+  left: 0
+  background-color: #414345
+  color: #ffffff
+  padding: 5px 15px
+  border-radius: 5px
+  z-index: 9999
+  visibility: hidden
+  font-family: "Poppins", sans-serif
+  &::before
+    position: absolute
+    display:block
+    content: ""
+    top: 0
+    left: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-top: 8px solid #414345
+    transform: translateX(-50%)
+    left: 50%
+    top: 100%
+
