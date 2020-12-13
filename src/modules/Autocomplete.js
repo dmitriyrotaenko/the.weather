@@ -1,4 +1,4 @@
-import { debounce } from './utils';
+import { debounce } from "./utils";
 
 
 class AutocompleteConfig {
@@ -12,19 +12,19 @@ class AutocompleteConfig {
     if(target.value.trim().length !== 0) {
       const cities = await this.fetchData(target.value);
       if(!cities.data) {
-        this.dropdown.classList.remove('is-active');
+        this.dropdown.classList.remove("is-active");
         return;
       } 
 
-      this.results.innerHTML = '';
-      this.dropdown.classList.add('is-active');
+      this.results.innerHTML = "";
+      this.dropdown.classList.add("is-active");
       for(let city of cities.data) {
-        const item = document.createElement('a');
-        item.classList.add('autocomplete_item');
+        const item = document.createElement("a");
+        item.classList.add("autocomplete_item");
         item.innerHTML = this.renderOption(city); 
-        item.addEventListener('click', () => {
+        item.addEventListener("click", () => {
           this.input.value = city.LocalizedName;
-          this.dropdown.classList.remove('is-active');
+          this.dropdown.classList.remove("is-active");
           this.onOptionSelect(city.Key); 
         });
         this.results.append(item);
@@ -49,22 +49,22 @@ export class Autocomplete extends AutocompleteConfig {
         <div class="autocomplete_results"></div>
       </div>`;
 
-    this.dropdown = this.root.querySelector('.autocomplete_dropdown');
-    this.results = this.root.querySelector('.autocomplete_results');
-    this.input = this.root.querySelector('.autocomplete_input');
-    this.input.addEventListener('input', debounce(this.onInput.bind(this), 500));
+    this.dropdown = this.root.querySelector(".autocomplete_dropdown");
+    this.results = this.root.querySelector(".autocomplete_results");
+    this.input = this.root.querySelector(".autocomplete_input");
+    this.input.addEventListener("input", debounce(this.onInput.bind(this), 500));
 
     // listener to prevent unnecessary backforward animation when input is not empty
-    this.input.addEventListener('blur', ({target}) => {
+    this.input.addEventListener("blur", ({target}) => {
       const value = target.value.trim();
       value ? 
-      this.input.classList.add('autocomplete_input-fixed') : 
-      this.input.classList.remove('autocomplete_input-fixed')
+      this.input.classList.add("autocomplete_input-fixed") : 
+      this.input.classList.remove("autocomplete_input-fixed")
     });
 
-    document.addEventListener('click', ({target}) => {
+    document.addEventListener("click", ({target}) => {
       if(!this.root.contains(target))
-        this.dropdown.classList.remove('is-active');
+        this.dropdown.classList.remove("is-active");
     });
   }
 }

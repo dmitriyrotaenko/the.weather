@@ -1,12 +1,12 @@
-import { createElement } from './Operations';
+import { createElement } from "./Operations";
 
 // importing images
-import clearDay from '../images/clear_day.jpg';
-import clearNight from '../images/clear_night.jpg';
-import clouds from '../images/clouds.jpg';
-import rain from '../images/rain.png';
-import snow from '../images/snow.jpg' 
-import thunder from '../images/thunder.jpg'
+import clearDay from "../images/clear_day.jpg";
+import clearNight from "../images/clear_night.jpg";
+import clouds from "../images/clouds.jpg";
+import rain from "../images/rain.png";
+import snow from "../images/snow.jpg" 
+import thunder from "../images/thunder.jpg"
 
 /**
  * @param {function} callback - function to execute
@@ -70,47 +70,47 @@ export const matchIcon = iconID => {
   let matchedIconClass;
   
   const icon = createElement({
-    tagName: 'i',
+    tagName: "i",
     attributes: {
-      classes: ['fas']
+      classes: ["fas"]
     }
   })
 
   // using fa icons instead of default ones
   switch(iconID) {
-    case 1: case 2: case 3: matchedIconClass = 'fa-sun';
+    case 1: case 2: case 3: matchedIconClass = "fa-sun";
       break;
-    case 4: case 5: case 6: matchedIconClass = 'fa-cloud-sun'; 
+    case 4: case 5: case 6: matchedIconClass = "fa-cloud-sun"; 
       break;
-    case 7: case 8: matchedIconClass = 'fa-cloud';
+    case 7: case 8: matchedIconClass = "fa-cloud";
       break;
-    case 11: matchedIconClass = 'fa-smog';
+    case 11: matchedIconClass = "fa-smog";
       break;
-    case 12: case 18: matchedIconClass = 'fa-cloud-showers-heavy'; 
+    case 12: case 18: matchedIconClass = "fa-cloud-showers-heavy"; 
       break;
-    case 13: case 14: case 16: case 17: matchedIconClass = 'fa-cloud-sun-rain';
+    case 13: case 14: case 16: case 17: matchedIconClass = "fa-cloud-sun-rain";
       break;
-    case 15: case 41: case 42: matchedIconClass = 'fa-bolt';
+    case 15: case 41: case 42: matchedIconClass = "fa-bolt";
       break;
     case 19: case 20: case 21: case 22: 
     case 23: case 25: case 26: case 29:
-    case 43: case 44: matchedIconClass = 'fa-snowflake';
+    case 43: case 44: matchedIconClass = "fa-snowflake";
       break;
-    case 24: matchedIconClass = 'fa-icicles';
+    case 24: matchedIconClass = "fa-icicles";
       break;
-    case 30: matchedIconClass = 'fa-thermometer-three-quarters';
+    case 30: matchedIconClass = "fa-thermometer-three-quarters";
       break;
-    case 31: matchedIconClass = 'fa-thermometer-quarter';
+    case 31: matchedIconClass = "fa-thermometer-quarter";
       break;
-    case 32: matchedIconClass = 'fa-wind';
+    case 32: matchedIconClass = "fa-wind";
       break;
-    case 33: case 34: matchedIconClass = 'fa-moon';
+    case 33: case 34: matchedIconClass = "fa-moon";
       break;
-    case 35: case 36: case 37: case 38: matchedIconClass = 'fa-cloud-moon';
+    case 35: case 36: case 37: case 38: matchedIconClass = "fa-cloud-moon";
       break;
-    case 39: case 40: matchedIconClass = 'fa-cloud-moon-rain';
+    case 39: case 40: matchedIconClass = "fa-cloud-moon-rain";
       break;
-    default: matchedIconClass = 'fa-cloud';
+    default: matchedIconClass = "fa-cloud";
   }
 
   icon.classList.add(matchedIconClass);
@@ -118,8 +118,5 @@ export const matchIcon = iconID => {
   return icon;
 }
 
-export const getBrowserLang = () => {
-  return navigator.language || navigator.browserLanguage || 'en-GB';
-}
 
 export const trimLongString = string => string.length > 15 ? `${string.substring(0, 15)}...` : string;

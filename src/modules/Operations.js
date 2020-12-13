@@ -1,6 +1,6 @@
 
 /**
- * @param { string } tagName - e.g. 'div' or 'span;
+ * @param { string } tagName - e.g. "div" or span;
  * @param { object } attributes - May contain css classes and other attributes
  * @param { string } content - Content for text nodes
  * @param { array<HTMLElement> } children - Child elements  
@@ -8,7 +8,7 @@
  * @returns { HTMLElement } - Specified tag with attributes and child elements
  */
 export const createElement = ({tagName, attributes, content, children}) => {
-  if(tagName === 'text') {
+  if(tagName === "text") {
     return document.createTextNode(content);
   } else {
     if(arguments instanceof Object) {
@@ -17,7 +17,7 @@ export const createElement = ({tagName, attributes, content, children}) => {
         // add classes and other attributes to element
         for(let attribute in attributes) {
           const itsValue = attributes[attribute];
-          if(attribute === 'classes' && itsValue instanceof Array) {
+          if(attribute === "classes" && itsValue instanceof Array) {
             parent.classList.add(...itsValue);
           } else {
             parent.setAttribute(attribute, itsValue);
@@ -30,14 +30,13 @@ export const createElement = ({tagName, attributes, content, children}) => {
       
       return parent;
     } else {
-      throw new Error('Config must be an object!')
+      throw new Error("Config must be an object!")
     }
   }
 }
 
 export const destroyElement = element => {
   const parent = element.parentNode;
-  console.log(parent);
   if(parent.contains(element)) parent.removeChild(element);
   
   else return;
@@ -63,7 +62,7 @@ export const renderData = elements => {
       content.nodeType === 1 ? target.appendChild(content) : target.textContent = content;
     }
   } else {
-    throw new Error('Parameter must be an array');
+    throw new Error("Parameter must be an array");
   }
 }
 

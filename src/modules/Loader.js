@@ -1,4 +1,4 @@
-import { createElement, destroyElement } from './Operations';
+import { createElement } from "./Operations";
 
 export default class Loader {
   constructor(parent = document.body) {
@@ -6,22 +6,22 @@ export default class Loader {
     
     this.loader = createElement({
       // creating loader container 
-      tagName: 'div',
+      tagName: "div",
       attributes: {
-        classes: ['loader_container']
+        classes: ["loader_container"]
       },
       children: [
         // creating spinner
         createElement({
-          tagName: 'div',
+          tagName: "div",
           attributes: {
-            classes: ['loader']
+            classes: ["loader"]
           },
           children: [
             // loader placeholder
             createElement({
-              tagName: 'text',
-              content: 'Loading...'
+              tagName: "text",
+              content: "Loading..."
             })
           ]
         })
@@ -32,13 +32,14 @@ export default class Loader {
   }
 
   start() {
-    if(this.loader.classList.contains('hidden')) {
-      this.loader.classList.remove('hidden');
+    if(this.loader.classList.contains("hidden")) {
+      this.loader.classList.remove("hidden");
     }
   }
 
   destroy() {
-    this.loader.classList.add('hidden');
+    this.loader.classList.add("hidden");
   }
 
 }
+
