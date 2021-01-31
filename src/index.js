@@ -1,46 +1,84 @@
-import "./styles.sass";
 import "regenerator-runtime/runtime";
-import { Autocomplete } from "./modules/Autocomplete";
-import { LocationDate } from "./modules/LocationDate";
-import * as operations from "./modules/Operations";
-import DOM from "./modules/DOM";
 import { 
+  Autocomplete,
+  DOM, 
+  operations,
   matchIcon, 
-  matchImage,
-  trimLongString
-} from "./modules/utils";
-import Loader from "./modules/Loader";
-import Tooltip from "./modules/Tooltip";
+  matchImage, 
+  toggleBtn,
+  getUserLocation, 
+  getLocationData, 
+  getCityKey,
+  formatDate,
+  Tooltip,
+  Modal,
+  Loader
+} from "./modules/exports";
+
+import "./styles.sass";
+
 
 
 const loader = new Loader();
 
-window.addEventListener("load", () => loader.destroy());
+window.addEventListener("load", () => {
+  const askUserPermission = new Modal("Would you like to share your location to get weather forecast?", {
+    onCancel: () => {
+      askUserPermission.destroy(true);
+      document.querySelector(".autocomplete_input").focus();
+    },
+    onSubmit: () => getUserLocation(async position => {
+      // disable buttons while request
+      toggleBtn(askUserPermission.okButton, askUserPermission.cancelButton);
+      const { latitude, longitude } = position.coords;
+      const zone = (await getLocationData(latitude, longitude)).zoneName;
+      /* extract city name by removing country name 
+      and underscores from the "zone" string */
+      const cityName = zone.substring(zone.indexOf("/") + 1).replace("_", " ");
+
+      const clarifyLocation = new Modal(`Is ${cityName} your current location?`, {
+        onCancel: () => {
+          clarifyLocation.destroy(true),
+          document.querySelector(".autocomplete_input").focus();
+        },
+        onSubmit: async () => {
+          // disable buttons while request
+          toggleBtn(clarifyLocation.okButton, clarifyLocation.cancelButton);
+          const cityKey = await getCityKey(cityName);
+          clarifyLocation.destroy(false);
+          onCitySelect(cityKey);
+        }
+      });
+      }, askUserPermission.destroy)
+  });
+});
 
 
 const onCitySelect = async cityKey => {
 
-  loader.start();
+  DOM.quote.style.display = "none";
+
+  loader.init();
 
   try {
     await axios.get(`http://dataservice.accuweather.com/locations/v1/${cityKey}`, {
       params: {
-        apikey: "YOUR_API_KEY",
+        apikey: "H51SHkvJDM21y24lqnOTIGLcST6HwYSy",
         details: true
       }
     })
     .then(async cityInfo => {
       // getting lat and long for LocationDate
       const { Latitude, Longitude } = cityInfo.data.GeoPosition;
-      const locationDate = new LocationDate(Latitude, Longitude);
-      const { time, weekDay, date } = await locationDate.getFormattedDate();
-      
 
+      const locationDate = (await getLocationData(Latitude, Longitude)).formatted;
 
+      const { time, weekDay, date } = formatDate(locationDate);
+    
       // current weather
       const weather = await axios.get(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?`, {
         params: {
-          apikey: "YOUR_API_KEY",
+          apikey: "H51SHkvJDM21y24lqnOTIGLcST6HwYSy",
           details: true
         }
       });
@@ -61,10 +99,10 @@ const onCitySelect = async cityKey => {
 
 
 
-      // render city data (temperature, date and time, etc.)
+      // render city data (temperature, date,  time, etc.)
       operations.renderData([
         { target: DOM.currentTemp, content: `${temperature}\u00b0` },
-        { target: DOM.cityName, content: trimLongString(cityInfo.data.LocalizedName) },
+        { target: DOM.cityName, content: cityInfo.data.LocalizedName },
         { target: DOM.cityDate, content: `${time} - ${weekDay}, ${date}` },
         { target: DOM.mainIcon, content: matchedIcon },
         { target: DOM.state, content: today.WeatherText},
@@ -80,49 +118,15 @@ const onCitySelect = async cityKey => {
       
       // adding precipitation data if any
       if(today.HasPrecipitation) {
-        const precipDetails = operations.createElement({
-          tagName: "li",
-          attributes: {
-            classes: ["details_item", "precips"]
-          },
-          children: [
-            operations.createElement({
-              tagName: "span",
-              attributes: {
-                classes: ["details_name"]
-              },
-              children: [
-                // precipitation type (rain, snow, etc.)
-                operations.createElement({
-                  tagName: "text",
-                  content: `${today.PrecipitationType}`
-                })
-              ]
-            }),
-            operations.createElement({
-              tagName: "span",
-              attributes: {
-                classes: ["details_value", "precip_value"]
-              },
-              children: [
-                // precipitation value in mm
-                operations.createElement({
-                  tagName: "text",
-                  content: `${today.Precip1hr.Metric.Value}mm`
-                })
-              ]
-            })
-          ]
-        });
-
+        const precipDetails = operations.buildPrecipHTML(today);
         DOM.detailsList.appendChild(precipDetails);
       } 
 
 
-      // getting 5-days forecast
+      // return 5-days forecast for the next request
       return await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}`, {
         params: {
-          apikey: "YOUR_API_KEY",
+          apikey: "H51SHkvJDM21y24lqnOTIGLcST6HwYSy",
           metric: true
         }
       });
@@ -137,132 +141,46 @@ const onCitySelect = async cityKey => {
 
       // build and render next days forecast
       for(let forecast of forecasts) {
-        // skip today"s forecast
+        // skip today's forecast
         if(forecast === forecasts[0]) continue;
 
         const weekDay = new Date(forecast.Date).toLocaleString("en-GB", {weekday: "long"});
         const icon = matchIcon(forecast.Day.Icon);
         icon.classList.add("fa-1x")
 
-        const listElement = operations.createElement({
-          tagName: "li",
-          attributes: {
-            classes: ["nextDays_item"]
-          },
-          children: [
-            // building week day HTML
-            operations.createElement({
-              tagName: "div",
-              attributes: {
-                classes: ["nextDays_item-box"]
-              },
-              children: [
-                operations.createElement({
-                  tagName: "span",
-                  attributes: {
-                    classes: ["nextDays_day"]
-                  },
-                  children: [
-                    operations.createElement({
-                      tagName: "text",
-                      content: weekDay
-                    })
-                  ]
-                })
-              ]
-            }),
-
-            // building icon HTML
-            operations.createElement({
-              tagName: "div",
-              attributes: {
-                classes: ["nextDays_item-box", "nextDays_item-centered"]
-              },
-              children: [
-                operations.createElement({
-                  tagName: "span",
-                  attributes: {
-                    classes: ["nextDays_state"]
-                  },
-                  children: [
-                    icon
-                  ]
-                })
-              ]
-            }),
-
-            // building min/max temperature HTML
-            operations.createElement({
-              tagName: "div",
-              attributes: {
-                classes: ["nextDays_item-box"]
-              },
-              children: [
-                operations.createElement({
-                  tagName: "div",
-                  attributes: {
-                    classes: ["nextDays_temps"]
-                  },
-                  children: [
-                    // max temp
-                    operations.createElement({
-                      tagName: "span",
-                      attributes: {
-                        classes: ["nextDays_max"]
-                      }, 
-                      children: [
-                        operations.createElement({
-                          tagName: "text",
-                          content: `${Math.ceil(forecast.Temperature.Maximum.Value)}\u00b0`
-                        })
-                      ]
-                    }),
-                    // min temp
-                    operations.createElement({
-                      tagName: "span",
-                      attributes: {
-                        classes: ["nextDays_min"]
-                      }, 
-                      children: [
-                        operations.createElement({
-                          tagName: "text",
-                          content: `${Math.ceil(forecast.Temperature.Minimum.Value)}\u00b0`
-                        })
-                      ]
-                    }),
-                  ]
-                })
-              ]
-            })
-          ]
+        const listElement = operations.buildNextDayHTML({
+          weekDay,
+          icon,
+          maxTemp: forecast.Temperature.Maximum.Value,
+          minTemp: forecast.Temperature.Minimum.Value
         });
  
         DOM.nextDaysList.appendChild(listElement);
 
+        // tooltip instance for every icon
         new Tooltip(listElement.children[1].children[0], forecast.Day.IconPhrase);
       }
 
       if(DOM.nextDays.classList.contains("hidden")) 
         DOM.nextDays.classList.remove("hidden");
 
-        loader.destroy();
+        loader.destroy(true);
     });
     
 
 
   } catch(e) {
-    alert("Something went wrong. Try again.")
-    console.log(e);
+    alert("Something went wrong. Try again.");
   }
 }
 
-// autocomplete config
+
 const config = {
   fetchData: async searchValue => {
     const response = await axios.get("http://dataservice.accuweather.com/locations/v1/cities/autocomplete", {
       params: {
         q: searchValue,
-        apikey: "YOUR_API_KEY"
+        apikey: "H51SHkvJDM21y24lqnOTIGLcST6HwYSy"
       }
     });
     
@@ -276,14 +194,8 @@ const config = {
   onOptionSelect: onCitySelect
 }
 
+
 new Autocomplete({
   ...config,
   root: document.querySelector(".autocomplete")
 });
-
-
-/*
-  -- autodetect
-  -- fix scroll issue
-  -- compact styles
-*/

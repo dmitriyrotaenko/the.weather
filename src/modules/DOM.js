@@ -6,6 +6,7 @@ export default {
   weatherLeft: document.querySelector(".weather_left"),
   blurred: document.querySelector(".sidepanel_blurred"),
 
+  quote: document.querySelector(".quote"),
   currentTemp: document.querySelector(".current_temperature"),
   cityName: document.querySelector(".current_city_name"),
   cityDate: document.querySelector(".current_city_date"),

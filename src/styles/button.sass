@@ -1,0 +1,21 @@
+.button
+  background-color: transparent
+  border: none
+  cursor: pointer
+  font-weight: bold
+  padding: 10px 15px
+  font-size: 1.1rem
+  font-family: "Poppins", sans-serif
+  &_cancel
+    color: #d94c4c
+  &_primary
+    background-color: #523eaf
+    color: #ffffff
+    margin-left: 10px
+    &:hover
+      background-color: lighten(#523eaf, 5%)
+  &-disabled
+    cursor: not-allowed
+    pointer-events: none
+    opacity: .5
+     

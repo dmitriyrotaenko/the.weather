@@ -33,7 +33,7 @@ class AutocompleteConfig {
   }
 }
 
-export class Autocomplete extends AutocompleteConfig {
+export default class Autocomplete extends AutocompleteConfig {
   constructor({root, fetchData, renderOption, onOptionSelect}) {
     super({fetchData, renderOption, onOptionSelect});
     this.root = root;

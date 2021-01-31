@@ -1,0 +1,23 @@
+.blocking
+  &-overlay
+    @extend %overlay-config
+    z-index: 6
+    display: none
+  &-box
+    background-color: #ffffff
+    max-width: 400px
+    display: flex
+    flex-direction: column
+    -webkit-box-shadow: 29px 31px 16px px rgba(0,0,0,1)
+    -moz-box-shadow: 29px 31px 16px 2px rgba(0,0,0,1)
+    box-shadow: 20px 20px 20px 2px rgba(0,0,0,.4)
+    font-family: "Poppins", sans-serif
+    p
+      color: #523eaf
+      text-align: center
+      padding: 20px
+      font-size: 1.2rem
+
+@media screen and (max-width: 930px)
+  .blocking-overlay
+    display: flex

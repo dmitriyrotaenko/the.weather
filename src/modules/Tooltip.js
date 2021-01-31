@@ -14,8 +14,6 @@ export default class Tooltip {
 		this.element.addEventListener("mouseleave", () => {
 			this.destroyTooltip(this.tooltip);
 		});
-
-		console.log(this.tooltip);
 	}
 
 	createTooltip(text) {
@@ -38,6 +36,7 @@ export default class Tooltip {
 		const { x:elementX, width:elementW, y:elementY } = this.element.getBoundingClientRect();
 		const { height:tooltipH, width:tooltipW } = this.tooltip.getBoundingClientRect();
 
+		// center tooltip above the target element
 		const yPos = elementY - tooltipH * 1.5;
 		const xPos = Math.abs(elementX - Math.abs(elementW - tooltipW) / 2);
 		

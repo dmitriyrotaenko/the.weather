@@ -20,8 +20,7 @@ module.exports = {
 
   devServer: {
     contentBase: "./dist",
-    host: '192.168.0.22',
-    open: true
+    // host: '192.168.0.22',
   },
 
   module: {

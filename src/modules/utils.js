@@ -9,10 +9,10 @@ import snow from "../images/snow.jpg"
 import thunder from "../images/thunder.jpg"
 
 /**
- * @param {function} callback - function to execute
+ * Executes passed callback with a specified interval 
+ * @param {Function} callback - function to execute
  * @param {number} delay - interval to execute function with
  */
-
 export const debounce = (callback, delay = 1000) => {
   let timeoutID;
   return (...args) => {
@@ -118,5 +118,14 @@ export const matchIcon = iconID => {
   return icon;
 }
 
+export const toggleBtn = (...btns) => {
+  [...Object.values(btns)].forEach(btn => {
 
-export const trimLongString = string => string.length > 15 ? `${string.substring(0, 15)}...` : string;
+    !btn.classList.contains("button-disabled") ? 
+    btn.classList.add("button-disabled") :
+    btn.classList.remove("button-disabled");
+  });
+}
+
+
+

@@ -1,45 +1,41 @@
-import { createElement } from "./Operations";
+import Overlay from "./Overlay";
+import { 
+  createElement,
+  removeChildren
+} from "./Operations";
 
-export default class Loader {
-  constructor(parent = document.body) {
-    this.parent = parent;
-    
-    this.loader = createElement({
-      // creating loader container 
+export default class Loader extends Overlay {
+  constructor() {
+    super();
+    this.loader = this._createLoader();
+    this.init();
+  }
+
+  _createLoader() {
+    return createElement({
       tagName: "div",
       attributes: {
-        classes: ["loader_container"]
+        classes: ["loader"]
       },
       children: [
-        // creating spinner
+        // loader placeholder
         createElement({
-          tagName: "div",
-          attributes: {
-            classes: ["loader"]
-          },
-          children: [
-            // loader placeholder
-            createElement({
-              tagName: "text",
-              content: "Loading..."
-            })
-          ]
+          tagName: "text",
+          content: "Loading..."
         })
       ]
     });
-
-    this.parent.appendChild(this.loader);
   }
 
-  start() {
-    if(this.loader.classList.contains("hidden")) {
-      this.loader.classList.remove("hidden");
-    }
+  init() {
+    if(!document.body.contains(this.overlay)) super.appendTo();
+    if(this.overlay.children) removeChildren(this.overlay);
+      
+    this.overlay.appendChild(this.loader);
   }
 
-  destroy() {
-    this.loader.classList.add("hidden");
+  destroy(destroyModal = true) {
+    super.destroy(this.loader);
+    if(destroyModal) super.destroy(this.overlay);
   }
-
 }
-
